@@ -1,0 +1,6 @@
+[
+  {
+    "caption": "SublimeBump: Bump version on the selected line",
+    "command": "bump_line_version"
+  }
+]
