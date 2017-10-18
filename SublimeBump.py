@@ -20,6 +20,8 @@ def get_focused_view_id(view):
 
 def file_supported(view):
     full_filename = view.file_name()
+    if not full_filename:
+        return False
     filename = os.path.split(full_filename)[1]
     # sublime.status_message(file_extension)
     return filename in manager.get_supported_filenames()
@@ -51,6 +53,14 @@ class BumpLatestVersionCommand(sublime_plugin.TextCommand):
         run_bump_with_mode(self.view, edit, 'latest')
 
 class BumpNextVersionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        run_bump_with_mode(self.view, edit, 'next')
+
+class SwitchLatestVersionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        run_bump_with_mode(self.view, edit, 'next')
+
+class SwitchNextVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         run_bump_with_mode(self.view, edit, 'next')
 
