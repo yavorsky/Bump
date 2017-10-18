@@ -117,7 +117,7 @@ class SublimeBump(sublime_plugin.EventListener):
             if (vid not in versions): versions[vid] = {}
             versions[vid][package_str] = version
 
-        self.fetch_latest_version(package, callback)
+        self.fetch_package_version(package, version, callback)
 
         #self.update_log(view, version);
         # text = self.get_text(view)
@@ -135,9 +135,8 @@ class SublimeBump(sublime_plugin.EventListener):
         encoding = webURL.info().get_content_charset('utf-8')
         return json.loads(data.decode(encoding))
 
-    def fetch_latest_version(self, package, callback = None):
+    def fetch_package_version(self, package, version, callback = None):
         registry = self.get_registry()
-        version = self.get_package_version()
         pathname = os.path.join(registry, package)
         pathname = Template('$pathname?version=$version').substitute(pathname=pathname, version=version)
         response = self.get_request(pathname)
