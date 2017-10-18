@@ -105,15 +105,17 @@ class SublimeBump(sublime_plugin.EventListener):
             return
 
         package, version = self.get_current_version(lineText)
+        version = self.get_package_version()
 
-        if vid in versions and package in versions[vid]:
-            self.log_version(view, package, versions[vid][package])
+        package_str = package + version
+
+        if vid in versions and package_str in versions[vid]:
+            self.log_version(view, package, versions[vid][package_str])
+            return
 
         def callback(version):
-            if (vid not in versions):
-                versions[vid] = {}
-    
-            versions[vid][package] = version
+            if (vid not in versions): versions[vid] = {}
+            versions[vid][package_str] = version
 
         self.fetch_latest_version(package, callback)
 
