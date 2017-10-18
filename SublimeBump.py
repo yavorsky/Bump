@@ -35,9 +35,9 @@ default_version = 'latest' # could be next
 #     res_obj = json.loads(res_body.decode("utf-8"))
 #     self.view.insert(edit, 0, json.dumps(res_obj))
 
-# class BumpLineVersionCommand(sublime_plugin.TextCommand):
-#     def run(self, edit):
-#         self.view.insert(edit, 0, "111")
+class BumpLineVersionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        self.view.insert(edit, 0, "111")
 
 # class PrintVersionCommand(sublime_plugin.TextCommand):
 #     def run(self, edit):
@@ -105,13 +105,15 @@ class SublimeBump(sublime_plugin.EventListener):
             return
 
         package, version = self.get_current_version(lineText)
-        
-        if package in versions:
-            self.log_version(view, package, versions[package])
+
+        if vid in versions and package in versions[vid]:
+            self.log_version(view, package, versions[vid][package])
 
         def callback(version):
-            self.log_version(view, package, version)
-            versions[package] = version
+            if (vid not in versions):
+                versions[vid] = {}
+    
+            versions[vid][package] = version
 
         self.fetch_latest_version(package, callback)
 
