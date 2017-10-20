@@ -1,6 +1,6 @@
 {
     "default": {
-        "debug": false,
+        "debug": true,
         "distribution_mode": "latest",
         "tooltip": true
     }

@@ -13,3 +13,11 @@ def set_log(view, lineText):
 
 def unset_log(view):
     view.erase_status('sublimebump')
+
+def printf(*args):
+  print('SublimeBump: ', end='')
+
+  for arg in args:
+      print(arg, end=' ')
+
+  print()

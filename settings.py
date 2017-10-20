@@ -1,3 +1,7 @@
+import sublime
+
+from . import SublimeBump
+
 def merge_user_settings(settings):
     """Return the default linter settings merged with the user's settings."""
 
@@ -189,10 +193,8 @@ class Settings:
 
         self.changeset.clear()
 
-        from . import sublimebump
-
         if need_refetch:
-            sublimebump.run_check_for_active_view()
+            SublimeBump.log_version_for_active_view()
 
         if self.previous_settings and self.on_update_callback:
             self.on_update_callback(need_relint)
@@ -249,6 +251,11 @@ class Settings:
 
 if 'plugin_is_loaded' not in globals():
     settings = Settings()
+
+    plugin_is_loaded = False
+
+def debug_mode():
+    return settings.get('debug')
 
 def edit(vid, edit):
     """Perform an operation on a view with the given edit object."""
