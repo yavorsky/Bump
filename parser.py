@@ -1,4 +1,5 @@
 import re
+import sublime
 
 lineRe = r'"\s?(.+)\s?"\s?:?\s?"(.+)"'
 
@@ -13,9 +14,17 @@ def get_current_package_coords(text):
 def get_text(view):
     return view.substr(sublime.Region(0, view.size()))
 
-def get_parent_key(text):
+def get_parent_key(view, region):
+    text = view.substr(sublime.Region(0, region.begin()))
+    open_pos = text.rfind('{')
+    close_pos = text.rfind('}')
+
+    if close_pos > open_pos:
+        return None
+
     upper_field_re = r'"\s?(.+)\s?"\s?:\s?{'
     parent_keys = re.findall(upper_field_re, text)
+
     if not len(parent_keys):
         return None
     return parent_keys[-1];

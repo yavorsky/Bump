@@ -5,17 +5,17 @@ from string import Template
 import sublime
 import sublime_plugin
 
-from . import parser, manager
+from . import parser
 from . import log
 from . import request
 from . import cache
 from . import transfrom
 from . import commands
 from . import settings as conf
+from . import bump
 
 def plugin_loaded():
     """Entry point for SL plugins."""
-
     conf.plugin_is_loaded = True
     conf.settings.load()
     log.printf('debug mode:', 'on' if conf.debug_mode() else 'off')
@@ -23,132 +23,11 @@ def plugin_loaded():
     plugin = SublimeBump.shared_plugin()
     conf.settings.on_update_call(SublimeBump.on_settings_updated)
 
-    # This ensures we lint the active view on a fresh install
-    window = sublime.active_window()
+    # # This ensures we lint the active view on a fresh install
+    # window = sublime.active_window()
 
-    if window:
-        plugin.on_selection_modified_async(window.active_view())
-
-def get_focused_view_id(view):
-    active_view = view.window().active_view()
-
-    for view in view.window().views():
-        if view == active_view:
-            return view
-
-def file_supported(view):
-    full_filename = view.file_name()
-    if not full_filename:
-        return False
-    filename = os.path.split(full_filename)[1]
-    # sublime.status_message(file_extension)
-    return filename in manager.get_supported_filenames()
-
-def from_cache_or_fetch(package, distribution_mode, vid, callback):
-    cached = cache.get_by_package(package, distribution_mode, vid)
-    if cached:
-        callback(cached)
-        return
-
-    request.fetch_package_version(package, distribution_mode, callback)
-
-def run_bump_with_mode(view, edit, distribution_mode):
-    if not file_supported(view): return
-    region = parser.get_active_region(view)
-    line_text = parser.get_text_from_line(view, region)
-    if not line_text: return
-
-    package, version = parser.get_current_package(line_text)
-    vid = view.id()
-
-    def callback(version):
-        transfrom.format_version_on_line(view, edit, region, version)
-
-    from_cache_or_fetch(package, distribution_mode, vid, callback)
-
-def log_version_for_view(view):
-    if not file_supported(view):
-        return
-
-    view = get_focused_view_id(view)
-
-    if view is None:
-        return
-
-    vid = view.id()
-
-    region = parser.get_active_region(view)
-
-    if region == None:
-       return
-
-    text_from_point = view.substr(sublime.Region(0, region.begin()))
-
-    parent_key = parser.get_parent_key(text_from_point)
-    if not parent_key or parent_key not in manager.get_dependency_fields():
-        return
-
-    line_text = parser.get_text_from_line(view, region)
-    # try:
-    #     lineno = view.rowcol(region.begin())[0]
-    #     lineText = view.substr(view.line(region)).strip()
-    # #     # selectedText = view.substr(region.begin())
-    # except IndexError:
-    #     lineno = -1
-    #     lineText = None
-
-    if not line_text:
-        return
-
-    package, version = parser.get_current_package(line_text)
-    distribution_mode = conf.settings.get('distribution_mode', 'latest')
-
-    #package_str = package + version
-
-    # if cache.in_cache(package, distribution_mode, vid):
-    #     log.log_version(view, package, cache.get_by_package(package, distribution_mode, vid))
-    #     return
-
-    def callback(version):
-        cache.set_package(package, distribution_mode, vid, version)
-        log.log_version(view, package, version)
-
-    # request.fetch_package_version(package, distribution_mode, callback)
-    from_cache_or_fetch(package, distribution_mode, vid, callback)
-
-
-def log_version_for_active_view():
-    view = sublime.active_window().active_view()
-    log_version_for_view(view)
-
-class BumpLatestVersionCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        run_bump_with_mode(self.view, edit, 'latest')
-
-class BumpNextVersionCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        run_bump_with_mode(self.view, edit, 'next')
-
-# class SwitchLatestVersionCommand(sublime_plugin.TextCommand):
-#     def run(self, edit):
-#         run_bump_with_mode(self.view, edit, 'next')
-
-# class SwitchNextVersionCommand(sublime_plugin.TextCommand):
-#     def run(self, edit):
-#         run_bump_with_mode(self.view, edit, 'next')
-
-# class BumpAllVersionsCommand(sublime_plugin.TextCommand):
-#     def run(self, edit):
-#         self.view.insert(edit, 0, "111")
-
-# class PrintVersionCommand(sublime_plugin.TextCommand):
-#     def run(self, edit):
-#         # sublime.set_timeout(lambda: sublime.status_message('Selection(s) already formatted.'), 0)
-#         window = sublime.active_window()
-#         if window:
-#             self.on_focus(window.active_view())
-#     def on_focus(self, view):
-#         print(view.size())
+    # if window:
+    #     plugin.on_selection_modified_async(window.active_view())
 
 class SublimeBump(sublime_plugin.EventListener):
     def __init__(self, *args, **kwargs):
@@ -170,7 +49,7 @@ class SublimeBump(sublime_plugin.EventListener):
 
     @classmethod
     def on_settings_updated(cls):
-        log_version_for_active_view()
+        bump.worker.log_version_for_active_view()
 
     def on_selection_modified_async(self, view):
         #id = get_focused_view_id(view)
@@ -181,9 +60,9 @@ class SublimeBump(sublime_plugin.EventListener):
         # view.replace(view, allcontent, 'Hello, World!')
 
     def display_version_for_line(self, view, tooltip=False):
-        if self.is_scratch(view):
+        if bump.worker.is_scratch(view):
            return
-        log_version_for_view(view)
+        bump.worker.log_version_for_view(view)
 
         # if not file_supported(view):
         #     return
@@ -257,31 +136,6 @@ class SublimeBump(sublime_plugin.EventListener):
     #     response = self.get_request(pathname)
     #     if (callback):
     #         callback(response['version'])
-
-    def is_scratch(self, view):
-        """
-        Return whether a view is effectively scratch.
-
-        There is a bug (or feature) in the current ST3 where the Find panel
-        is not marked scratch but has no window.
-
-        There is also a bug where settings files opened from within .sublime-package
-        files are not marked scratch during the initial on_modified event, so we have
-        to check that a view with a filename actually exists on disk if the file
-        being opened is in the Sublime Text packages directory.
-
-        """
-
-        if view.is_scratch() or view.is_read_only() or view.window() is None or view.settings().get("repl") is not None:
-            return True
-        elif (
-            view.file_name() and
-            view.file_name().startswith(sublime.packages_path() + os.path.sep) and
-            not os.path.exists(view.file_name())
-        ):
-            return True
-        else:
-            return False
 
 class SublimebumpEditCommand(sublime_plugin.TextCommand):
     """A plugin command used to generate an edit object for a view."""

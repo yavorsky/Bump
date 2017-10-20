@@ -1,27 +1,14 @@
 import sublime
+import os
+from copy import deepcopy
 
-from . import SublimeBump
+#from . import bump
 
 def merge_user_settings(settings):
     """Return the default linter settings merged with the user's settings."""
 
     default = settings.get('default', {})
     user = settings.get('user', {})
-
-    if user:
-        linters = default.pop('linters', {})
-        user_linters = user.get('linters', {})
-
-        for name, data in user_linters.items():
-            if name in linters:
-                linters[name].update(data)
-            else:
-                linters[name] = data
-
-        default['linters'] = linters
-
-        user.pop('linters', None)
-        default.update(user)
 
     return default
 
@@ -118,88 +105,20 @@ class Settings:
             self.changeset.discard('@disable')
         else:
             need_refetch = False
-        # if (
-        #     'paths' in self.changeset or
-        #     (self.previous_settings and
-        #      self.previous_settings.get('paths') != self.settings.get('paths'))
-        # ):
-        #     need_relint = True
-        #     util.clear_path_caches()
-        #     self.changeset.discard('paths')
 
-        # Add python paths if they changed
-        # if (
-        #     'python_paths' in self.changeset or
-        #     (self.previous_settings and
-        #      self.previous_settings.get('python_paths') != self.settings.get('python_paths'))
-        # ):
-        #     need_relint = True
-        #     self.changeset.discard('python_paths')
-        #     python_paths = self.settings.get('python_paths', {}).get(sublime.platform(), [])
-
-        #     for path in python_paths:
-        #         if path not in sys.path:
-        #             sys.path.append(path)
-
-        # If the syntax map changed, reassign linters to all views
-
-        # if (
-        #     'syntax_map' in self.changeset or
-        #     (self.previous_settings and
-        #      self.previous_settings.get('syntax_map') != self.settings.get('syntax_map'))
-        # ):
-        #     need_refetch = True
-        #     self.changeset.discard('syntax_map')
-        #     Linter.clear_all()
-        #     util.apply_to_all_views(lambda view: Linter.assign(view, reset=True))
-
-        # if (
-        #     'no_column_highlights_line' in self.changeset or
-        #     self.previous_settings.get('no_column_highlights_line') != self.settings.get('no_column_highlights_line')
-        # ):
-        #     need_relint = True
-        #     self.changeset.discard('no_column_highlights_line')
-
-        # if (
-        #     'gutter_theme' in self.changeset or
-        #     self.previous_settings.get('gutter_theme') != self.settings.get('gutter_theme')
-        # ):
-        #     self.changeset.discard('gutter_theme')
-        #     self.update_gutter_marks()
-
-        # error_color = self.settings.get('error_color', '')
-        # warning_color = self.settings.get('warning_color', '')
-
-        # if (
-        #     ('error_color' in self.changeset or 'warning_color' in self.changeset) or
-        #     (self.previous_settings and error_color and warning_color and
-        #      (self.previous_settings.get('error_color') != error_color or
-        #       self.previous_settings.get('warning_color') != warning_color))
-        # ):
-        #     self.changeset.discard('error_color')
-        #     self.changeset.discard('warning_color')
-
-        #     if (
-        #         sublime.ok_cancel_dialog(
-        #             'You changed the error and/or warning color. '
-        #             'Would you like to update the user color schemes '
-        #             'with the new colors?')
-        #     ):
-        #         util.change_mark_colors(error_color, warning_color)
-
-        # If any other settings changed, relint
         if (self.previous_settings or len(self.changeset) > 0):
             need_refetch = True
 
         self.changeset.clear()
 
-        if need_refetch:
-            SublimeBump.log_version_for_active_view()
+        # if need_refetch:
+        #     bump.worker.log_version_for_active_view()
 
         if self.previous_settings and self.on_update_callback:
             self.on_update_callback(need_relint)
 
     def save(self, view=None):
+        return;
         """
         Regenerate and save the user settings.
 

@@ -2,8 +2,9 @@ import os
 import json
 from string import Template
 from urllib import request
+from . import settings as conf
 
-from . import manager
+from . import defaults
 
 def get_request(pathname):
     webURL = request.urlopen(pathname)
@@ -12,7 +13,7 @@ def get_request(pathname):
     return json.loads(data.decode(encoding))
 
 def fetch_package_version(package, version, callback = None):
-    registry = manager.get_registry()
+    registry = conf.settings.get('registry', defaults.get_registry())
     pathname = os.path.join(registry, package)
     pathname = Template('$pathname?version=$version').substitute(pathname=pathname, version=version)
     response = get_request(pathname)

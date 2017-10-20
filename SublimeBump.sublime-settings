@@ -1,7 +1,14 @@
 {
     "default": {
-        "debug": true,
+        "debug": false,
         "distribution_mode": "latest",
-        "tooltip": true
+        "tooltip": true,
+        "supported_filenames": ["package.json"],
+        "registry": "https://registry.npmjs.org",
+        "dependency_fields": [
+          "dependencies",
+          "devDependencies",
+          "peerDependencies"
+        ]
     }
 }

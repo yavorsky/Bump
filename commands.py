@@ -27,7 +27,8 @@ import time
 import sublime
 import sublime_plugin
 
-from . import manager
+from . import defaults
+from . import bump
 from . import settings as conf
 
 class ChooseSettingCommand(sublime_plugin.WindowCommand):
@@ -125,7 +126,6 @@ class ChooseSettingCommand(sublime_plugin.WindowCommand):
 
     def set(self, index):
         """Set the value of the setting."""
-
         if index == -1:
             if self.settings_differ(self.previous_setting, self.setting_value()):
                 self.update_setting(self.previous_setting)
@@ -138,7 +138,6 @@ class ChooseSettingCommand(sublime_plugin.WindowCommand):
             setting = setting[0]
 
         setting = self.transform_setting(setting)
-
         if not self.settings_differ(conf.settings.get(self.setting, ''), setting):
             return
 
@@ -166,7 +165,6 @@ class ChooseSettingCommand(sublime_plugin.WindowCommand):
         than the indexed value from self.settings.
 
         """
-
         return self.settings[index]
 
     def setting_was_changed(self, setting):
@@ -201,7 +199,15 @@ def choose_setting_command(setting, preview):
 @choose_setting_command('distribution_mode', preview=False)
 class ChooseDistributionMode(ChooseSettingCommand):
     def get_settings(self):
-        return [[name.capitalize(), description] for name, description in manager.VERSION_MODES]
+        return [[name.capitalize(), description] for name, description in defaults.VERSION_MODES]
 
     def setting_was_changed(self, setting):
-        manager.set_package_version(setting)
+        bump.worker.log_version_for_active_view()
+
+class BumpLatestVersionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        bump.worker.run_bump_with_mode(self.view, edit, 'latest')
+
+class BumpNextVersionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        bump.worker.run_bump_with_mode(self.view, edit, 'next')
