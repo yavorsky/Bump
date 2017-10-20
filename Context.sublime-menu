@@ -1,10 +1,13 @@
-[
-  {
-    "caption": "SublimeBump: Format to latest",
-    "command": "bump_latest_version"
-  },
-  {
-    "caption": "SublimeBump: Format to next",
-    "command": "bump_next_version"
-  }
-]
+[{
+  "caption": "SublimeBump",
+  "children": [
+    {
+      "caption": "Format to the latest version",
+      "command": "bump_latest_version"
+    },
+    {
+      "caption": "Format to the next version",
+      "command": "bump_next_version"
+    }
+  ]
+}]

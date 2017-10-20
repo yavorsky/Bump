@@ -1,0 +1,18 @@
+[
+    {
+        "caption": "Preferences: SublimeBump Settings",
+        "command": "edit_settings",
+        "args": {
+          "base_file": "${packages}/SublimeBump/SublimeBump.sublime-settings",
+          "default": "${packages}/User/SublimeBump.sublime-settings"
+        }
+    },
+    {
+        "caption": "SublimeBump: Choose distribution mode",
+        "command": "choose_distribution_mode"
+    },
+    {
+        "caption": "SublimeBump: Show @latest versions",
+        "command": "switch_latest_version"
+    }
+]

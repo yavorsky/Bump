@@ -10,6 +10,8 @@ from . import log
 from . import request
 from . import cache
 from . import transfrom
+from . import commands
+from . import settings as conf
 
 def get_focused_view_id(view):
     active_view = view.window().active_view()
@@ -48,6 +50,61 @@ def run_bump_with_mode(view, edit, version_mode):
 
     from_cache_or_fetch(package, version_mode, vid, callback)
 
+def log_active_version_for_view(view):
+    if not file_supported(view):
+        return
+
+    view = get_focused_view_id(view)
+
+    if view is None:
+        return
+
+    vid = view.id()
+
+    region = parser.get_active_region(view)
+
+    if region == None:
+       return
+
+    text_from_point = view.substr(sublime.Region(0, region.begin()))
+
+    parent_key = parser.get_parent_key(text_from_point)
+    if not parent_key or parent_key not in manager.get_dependency_fields():
+        return
+
+    line_text = parser.get_text_from_line(view, region)
+    # try:
+    #     lineno = view.rowcol(region.begin())[0]
+    #     lineText = view.substr(view.line(region)).strip()
+    # #     # selectedText = view.substr(region.begin())
+    # except IndexError:
+    #     lineno = -1
+    #     lineText = None
+
+    if not line_text:
+        return
+
+    package, version = parser.get_current_package(line_text)
+    version_mode = manager.get_package_version()
+
+    #package_str = package + version
+
+    # if cache.in_cache(package, version_mode, vid):
+    #     log.log_version(view, package, cache.get_by_package(package, version_mode, vid))
+    #     return
+
+    def callback(version):
+        cache.set_package(package, version_mode, vid, version)
+        log.log_version(view, package, version)
+
+    # request.fetch_package_version(package, version_mode, callback)
+    from_cache_or_fetch(package, version_mode, vid, callback)
+
+
+def run_check_for_active_view():
+    view = sublime.active_window().active_view()
+    log_active_version_for_view(view)
+
 class BumpLatestVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         run_bump_with_mode(self.view, edit, 'latest')
@@ -56,13 +113,13 @@ class BumpNextVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         run_bump_with_mode(self.view, edit, 'next')
 
-class SwitchLatestVersionCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        run_bump_with_mode(self.view, edit, 'next')
+# class SwitchLatestVersionCommand(sublime_plugin.TextCommand):
+#     def run(self, edit):
+#         run_bump_with_mode(self.view, edit, 'next')
 
-class SwitchNextVersionCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        run_bump_with_mode(self.view, edit, 'next')
+# class SwitchNextVersionCommand(sublime_plugin.TextCommand):
+#     def run(self, edit):
+#         run_bump_with_mode(self.view, edit, 'next')
 
 # class BumpAllVersionsCommand(sublime_plugin.TextCommand):
 #     def run(self, edit):
@@ -188,3 +245,9 @@ class SublimeBump(sublime_plugin.EventListener):
         else:
             return False
 
+class SublimebumpEditCommand(sublime_plugin.TextCommand):
+    """A plugin command used to generate an edit object for a view."""
+
+    def run(self, edit):
+        """Run the command."""
+        conf.edit(self.view.id(), edit)

@@ -1,0 +1,7 @@
+{
+    "default": {
+        "debug": false,
+        "distribution_mode": "latest",
+        "tooltip": true
+    }
+}
