@@ -8,11 +8,7 @@
         }
     },
     {
-        "caption": "SublimeBump: Choose distribution mode",
+        "caption": "SublimeBump: Choose Distribution Mode",
         "command": "choose_distribution_mode"
-    },
-    {
-        "caption": "SublimeBump: Show @latest versions",
-        "command": "switch_latest_version"
     }
 ]
