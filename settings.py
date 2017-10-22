@@ -1,14 +1,30 @@
 import sublime
 import os
-from copy import deepcopy
 
-#from . import bump
+from copy import deepcopy
+from . import defaults
+
 
 def merge_user_settings(settings):
     """Return the default linter settings merged with the user's settings."""
 
-    default = settings.get('default', {})
     user = settings.get('user', {})
+    default = settings.get('default', {})
+
+    if user:
+        tooltip_styles = default.get('tooltip_styles', {})
+        user_tooltip_styles = user.get('tooltip_styles', {})
+
+        for field, style in user_tooltip_styles:
+            if field in tooltip_styles:
+                tooltip_styles[field] = style
+            else:
+                tooltip_styles[field] = style
+
+        default['tooltip_styles'] = tooltip_styles
+
+        user.pop('tooltip_styles', None)
+        default.update(user)
 
     return default
 
@@ -115,7 +131,7 @@ class Settings:
         #     bump.worker.log_version_for_active_view()
 
         if self.previous_settings and self.on_update_callback:
-            self.on_update_callback(need_relint)
+            self.on_update_callback(need_refetch)
 
     def save(self, view=None):
         return;

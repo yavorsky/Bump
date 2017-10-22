@@ -86,7 +86,8 @@ class Bump:
 
         def callback(version):
             cache.set_package(package, distribution_mode, vid, version)
-            log.log_version(view, package, version)
+            with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
+            log.log_version(view, package, version, with_tooltip)
 
         self.from_cache_or_fetch(package, distribution_mode, vid, callback)
 

@@ -9,6 +9,11 @@
           "dependencies",
           "devDependencies",
           "peerDependencies"
-        ]
+        ],
+        "tooltip_styles": {
+          "version_color": "#FFFFFF",
+          "package_color": "#76C1BA",
+          "background": "#253238"
+        }
     }
 }
