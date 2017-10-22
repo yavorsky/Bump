@@ -8,7 +8,7 @@ default_registry = 'https://registry.npmjs.org';
 
 default_distribution_mode = 'latest' # could be next
 VERSION_MODES = (
-    ('latest', 'Show latest released versions'),
+    ('latest', 'Show released versions only'),
     ('next', 'Show upcoming (alpha, beta) versions')
 )
 

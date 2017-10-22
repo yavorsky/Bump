@@ -1,4 +1,5 @@
 import os
+import urllib
 
 import sublime
 
@@ -31,7 +32,10 @@ class Bump:
             callback(cached)
             return
 
-        request.fetch_package_version(package, distribution_mode, callback)
+        try: request.fetch_package_version(package, distribution_mode, callback)
+        except urllib.error.URLError as e:
+            if e.code == 404 and distribution_mode != 'latest':
+                request.fetch_package_version(package, 'latest', callback)
 
     def run_bump_with_mode(self, view, edit, distribution_mode):
         if not self.file_supported(view): return
