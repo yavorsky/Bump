@@ -70,7 +70,6 @@ class Bump:
             return
 
         vid = view.id()
-
         # Get active region
         region = parser.get_active_region(view)
 
@@ -91,13 +90,12 @@ class Bump:
             return
 
         package, version = parser.get_current_package(line_text)
-        distribution_mode = conf.settings.get('distribution_mode', defaults.get_distribution_mode())
 
+        distribution_mode = conf.settings.get('distribution_mode', defaults.get_distribution_mode())
         def callback(version):
             cache.set_package(package, distribution_mode, vid, version)
             with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
             log.log_version(view, package, version, with_tooltip)
-
         self.from_cache_or_fetch(package, distribution_mode, vid, callback)
 
 
