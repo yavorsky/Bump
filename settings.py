@@ -60,7 +60,6 @@ class Settings:
 
         If the caller knows for certain that the value has changed,
         they should pass changed=True.
-
         """
         self.copy()
         self.settings[setting] = value
