@@ -10,5 +10,13 @@
     {
         "caption": "SublimeBump: Choose Distribution Mode",
         "command": "choose_distribution_mode"
+    },
+    {
+        "caption": "SublimeBump: Format To The Latest Version",
+        "command": "bump_latest_version"
+    },
+    {
+      "caption": "SublimeBump: Format To The Next Version",
+      "command": "bump_next_version"
     }
 ]
