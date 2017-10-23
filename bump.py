@@ -6,6 +6,7 @@ import sublime
 from . import defaults
 from . import settings as conf
 from . import parser
+from . import transfrom
 from . import cache
 from . import request
 from . import log
