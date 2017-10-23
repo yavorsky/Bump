@@ -1,30 +1,13 @@
 # coding: utf-8
 #
-# commands.py
-# Part of SublimeLinter3, a code checking framework for Sublime Text 3
 #
-# Written by Ryan Hileman and Aparajita Fishman
+# Written by Artem Yavorsky
 #
-# Project: https://github.com/SublimeLinter/SublimeLinter3
+# Project: https://github.com/yavorsky/SublimeBump
 # License: MIT
 #
 
-"""This module implements the Sublime Text commands provided by SublimeLinter."""
 
-import datetime
-from fnmatch import fnmatch
-from glob import glob
-import json
-import os
-import re
-import shutil
-import subprocess
-import tempfile
-from textwrap import TextWrapper
-from threading import Thread
-import time
-
-import sublime
 import sublime_plugin
 
 from . import defaults
@@ -158,35 +141,15 @@ class ChooseSettingCommand(sublime_plugin.WindowCommand):
         return new_setting != old_setting
 
     def selected_setting(self, index):
-        """
-        Return the selected setting by index.
-
-        Subclasses may override this if they want to return something other
-        than the indexed value from self.settings.
-
-        """
         return self.settings[index]
-
-    def setting_was_changed(self, setting):
-        """
-        Do something after the setting value is changed but before settings are saved.
-
-        Subclasses may override this if further action is necessary after
-        the setting's value is changed.
-
-        """
-        pass
 
 
 def choose_setting_command(setting, preview):
-    """Return a decorator that provides common methods for concrete subclasses of ChooseSettingCommand."""
-
     def decorator(cls):
         def init(self, window):
             super(cls, self).__init__(window, setting, preview)
 
         def run(self, **kwargs):
-            """Run the command."""
             self.choose(**kwargs)
 
         cls.setting = setting
@@ -211,3 +174,10 @@ class BumpLatestVersionCommand(sublime_plugin.TextCommand):
 class BumpNextVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         bump.worker.run_bump_with_mode(self.view, edit, 'next')
+
+class SublimebumpEditCommand(sublime_plugin.TextCommand):
+    """A plugin command used to generate an edit object for a view."""
+
+    def run(self, edit):
+        """Run the command."""
+        conf.edit(self.view.id(), edit)
