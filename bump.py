@@ -40,7 +40,15 @@ class Bump:
 
     def run_bump_with_mode(self, view, edit, distribution_mode):
         if not self.file_supported(view): return
+
         region = parser.get_active_region(view)
+        parent_key = parser.get_parent_key(view, region)
+        target_fields = conf.settings.get('dependency_fields', defaults.get_dependency_fields())
+
+        # Prevent parsing values from other fields.
+        if not parent_key or parent_key not in target_fields:
+            return
+
         line_text = parser.get_text_from_line(view, region)
         if not line_text: return
 
