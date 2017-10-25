@@ -17,8 +17,6 @@ For now, it allows:
 - Customize tooltip for your needs and taste.
 
   ​
-
-
 ## Installation
 
 The easiest and recommended way to install JsPrettier is using [Package Control](https://packagecontrol.io/packages/JsPrettier).
@@ -28,12 +26,11 @@ From the **main application menu**, navigate to:
 `Tools` -> `Command Palette...` -> `Package Control: Install Package`, type the word **SublimeBump**, then select it to complete the installation.
 
 
-
 ## Usage
 
 Just install the package and focus the line with dependency in `package.json`. SublimeBump will preview latest or next version (according to the distribution mode) of the package in the bottombar or with the tooltip.
 
-![Screen Shot 2017-10-24 at 15.13.20](/Users/aqson/Downloads/Screen Shot 2017-10-24 at 15.13.20.png)
+![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/latest-demo.png)
 
 ## Settings
 
@@ -50,13 +47,11 @@ Currently, SublimeBump supports `latest` and `next` distribution tags. By defaul
 With `next` mode, package trying to fetch latest version, and if no one was registered, it fallbacks to the `latest` version.
 
 
-
 ####tooltip
 
 Type: *Boolean*, Default: `true`
 
 Whether or not show tooltip near the cursor. If tooltip is disabled, the version would be displayed in the botombar.
-
 
 
 #### dependency_fields
@@ -66,13 +61,11 @@ Type: *Array*, Default: `["dependencies", "devDependencies", "peerDependencies"]
 Field name, where SublimeBump will search and show latest version for current package.
 
 
-
 #### supported_filenames
 
 Type: *Array*, Default: `["package.json"]`
 
 Name of the files when SublimeBump will watch out for your cursor. We haven't universal parser for all formats, but with json files it does its work.
-
 
 
 ## Key Bindings
@@ -83,9 +76,6 @@ SublimeBump has pre-defined keyboard shortcuts. For now, it format package value
 | ---------------- | --------------- | -------------- |
 | Format to latest | CTRL + K + ,    | CTRL + CMD + , |
 | Format to next   | CTRL + K + .    | CTRL + CMD + . |
-
-
-
 
 
 ## License
