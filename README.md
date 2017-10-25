@@ -42,14 +42,14 @@ Many options are customizable from the **Command Palette** (super + shift + p) a
 
 Type: *String*, Default: `latest`
 
-Command palette command: `Choose distribution mode`.
+Command: `Choose distribution mode`.
 
 Currently, SublimeBump supports `latest` and `next` distribution tags. By default, the `latest` tag is used by npm to identify the current version of a package. The `next` tag is used by some projects to identify the upcoming version (alpha, beta, etc). 
 
 With `next` mode, package trying to fetch latest version, and if no one was registered, it fallbacks to the `latest` version.
 
 
-####tooltip
+#### tooltip
 
 Type: *Boolean*, Default: `true`
 
