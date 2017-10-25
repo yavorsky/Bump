@@ -16,6 +16,9 @@ For now, it allows:
 
 - Customize tooltip for your needs and taste.
 
+
+![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/next-demo.png)
+
   ​
 ## Installation
 
@@ -30,7 +33,6 @@ From the **main application menu**, navigate to:
 
 Just install the package and focus the line with dependency in `package.json`. SublimeBump will preview latest or next version (according to the distribution mode) of the package in the bottombar or with the tooltip.
 
-![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/latest-demo.png)
 
 ## Settings
 
