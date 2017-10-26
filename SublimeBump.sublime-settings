@@ -8,7 +8,8 @@
         "dependency_fields": [
           "dependencies",
           "devDependencies",
-          "peerDependencies"
+          "peerDependencies",
+          "optionalDependencies"
         ],
         "tooltip_styles": {
           "version_color": "#FFFFFF",
