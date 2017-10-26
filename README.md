@@ -1,7 +1,7 @@
 SublimeBump
 =============
 
-A package allows to manage [npm](https://npmjs.com) and [yarn](https://yarnpkg.com) dependencies easily.
+A package allows to preview and manage latest versions of [npm](https://npmjs.com)/[yarn](https://yarnpkg.com) packages easily.
 Inspired by the vscode feature, but was rethought and enhanced.
 
 For now, it allows:
@@ -22,12 +22,22 @@ For now, it allows:
   ​
 ## Installation
 
-The easiest and recommended way to install JsPrettier is using [Package Control](https://packagecontrol.io/packages/JsPrettier).
+#### Install SublimeBump via Package Control
 
-From the **main application menu**, navigate to:
+The easiest and recommended way to install SublimeBump is using [Package Control](https://packagecontrol.io/packages/SublimeBump).
+
+From the **main application menu** (CMD + SHIFT + P), navigate to:
 
 `Tools` -> `Command Palette...` -> `Package Control: Install Package`, type the word **SublimeBump**, then select it to complete the installation.
 
+#### Manual installation
+
+##### via archive
+1. Download and extract SublimeBump [zip file](https://github.com/yavorsky/SublimeBump/yavorsky/SublimeBump/archive/master.zip) to your Sublime Text Packages directory (Sublime Text -> Preferences -> Browse Packages...).
+2. Rename the extracted directory from `SublimeBump-master` to `SublimeBump`.
+
+##### or via git clone
+`git clone https://github.com/yavorsky/SublimeBump.git $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/SublimeBump`
 
 ## Usage
 
@@ -79,6 +89,9 @@ SublimeBump has pre-defined keyboard shortcuts. For now, it format package value
 | Format to latest | CTRL + K + ,    | CTRL + CMD + , |
 | Format to next   | CTRL + K + .    | CTRL + CMD + . |
 
+
+------
+##### For updates and more you can [follow me on twitter](https://twitter.com/yavorsky_).
 
 ## License
 
