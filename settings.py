@@ -7,7 +7,6 @@ from . import defaults
 
 def merge_user_settings(settings):
     """Return the default linter settings merged with the user's settings."""
-
     user = settings.get('user', {})
     default = settings.get('default', {})
 
@@ -15,11 +14,9 @@ def merge_user_settings(settings):
         tooltip_styles = default.get('tooltip_styles', {})
         user_tooltip_styles = user.get('tooltip_styles', {})
 
-        for field, style in user_tooltip_styles:
+        for field in user_tooltip_styles:
             if field in tooltip_styles:
-                tooltip_styles[field] = style
-            else:
-                tooltip_styles[field] = style
+                tooltip_styles[field] = user_tooltip_styles[field]
 
         default['tooltip_styles'] = tooltip_styles
 
@@ -133,7 +130,6 @@ class Settings:
             self.on_update_callback(need_refetch)
 
     def save(self, view=None):
-        return;
         """
         Regenerate and save the user settings.
 
