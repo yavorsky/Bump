@@ -89,13 +89,14 @@ class Bump:
         if not line_text:
             return
 
-        package, version = parser.get_current_package(line_text)
+        package, current_version = parser.get_current_package(line_text)
 
         distribution_mode = conf.settings.get('distribution_mode', defaults.get_distribution_mode())
         def callback(version):
             cache.set_package(package, distribution_mode, vid, version)
             with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
-            log.log_version(view, package, version, with_tooltip)
+            has_matched = current_version == version
+            log.log_version(view, package, version, has_matched, with_tooltip)
         self.from_cache_or_fetch(package, distribution_mode, vid, callback)
 
 
