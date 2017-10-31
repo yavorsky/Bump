@@ -30,7 +30,7 @@ From the **main application menu** (CMD + SHIFT + P), navigate to:
 #### Manual installation
 
 ##### via archive
-1. Download and extract SublimeBump [zip file](https://github.com/yavorsky/SublimeBump/yavorsky/SublimeBump/archive/master.zip) to your Sublime Text Packages directory (Sublime Text -> Preferences -> Browse Packages...).
+1. Download and extract SublimeBump [zip file](https://github.com/yavorsky/SublimeBump/archive/master.zip) to your Sublime Text Packages directory (Sublime Text -> Preferences -> Browse Packages...).
 2. Rename the extracted directory from `SublimeBump-master` to `SublimeBump`.
 
 ##### or via git clone
