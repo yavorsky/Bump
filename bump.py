@@ -95,7 +95,7 @@ class Bump:
         def callback(version):
             cache.set_package(package, distribution_mode, vid, version)
             with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
-            has_matched = semver.match(current_version, version)
+            has_matched = semver.satisfies(version, current_version)
             log.log_version(view, package, version, has_matched, with_tooltip)
         self.from_cache_or_fetch(package, distribution_mode, vid, callback)
 

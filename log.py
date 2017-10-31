@@ -11,7 +11,11 @@ def show_tooltip(view, package, version, has_matched = True):
       if field in common_styles:
           common_styles[field] = tooltip_styles[field]
 
-    view.show_popup(Tooltip.get_str(has_matched).substitute(package=package, version=version, package_color=common_styles['package_color'], version_color=common_styles['version_color'], background=common_styles['background']), location=-1, max_width=400)
+    def bump_version(version):
+      distribution_mode = conf.settings.get('distribution_mode', defaults.get_distribution_mode())
+      view.run_command('bump_' + distribution_mode + '_version');
+
+    view.show_popup(Tooltip.get_str(has_matched).substitute(package=package, version=version, package_color=common_styles['package_color'], version_color=common_styles['version_color'], background=common_styles['background']), location=-1, max_width=400, on_navigate=bump_version)
 
 def log_version(view, package, version, has_matched, tooltip = False):
     formatted_post = ''
