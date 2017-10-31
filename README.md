@@ -10,7 +10,9 @@ For now, it allows:
 
 - Show **next** (alpha, beta, etc) package version.
 
-- Format to **latest** or **next** version from the editor view.
+- Compare semver versions and detect whether or not current version should be updated.
+
+- Format to **latest** or **next** version from the context menu.
 
 - Use custom registries.
 
@@ -42,6 +44,13 @@ From the **main application menu** (CMD + SHIFT + P), navigate to:
 ## Usage
 
 Just install the package and focus the line with dependency in `package.json`. SublimeBump will preview latest or next version (according to the distribution mode) of the package in the bottombar or with the tooltip.
+
+#### Main features:
+
+* **Focus the line** inside `dependencies`/`devDependencies`/`peerDependencies`/`optionalDependencies` block to preview latest or next version of the package. If tooltip option in settings is `false` then version will be displayed in the bottom bar.
+* **Click on the version in the tooltip** to format current version to the one from tooltip.
+* **Click on SublimeBump -> Format to...** latest/next version from the context menu.
+* **Choose distribution mode** to change whether or not to fetch unreleased (alpha/beta/etc) version before relaesed.
 
 
 ## Settings
