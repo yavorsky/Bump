@@ -17,7 +17,7 @@ For now, it allows:
 - Customize tooltip for your needs and taste.
 
 
-![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/next-demo.png)
+![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/preview.gif)
 
   ​
 ## Installation
