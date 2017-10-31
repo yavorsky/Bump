@@ -7,15 +7,10 @@ Inspired by the vscode feature, but was rethought and enhanced.
 For now, it allows:
 
 - Show **latest** released package version.
-
 - Show **next** (alpha, beta, etc) package version.
-
 - Compare semver versions and detect whether or not current version should be updated.
-
 - Format to **latest** or **next** version from the context menu.
-
 - Use custom registries.
-
 - Customize tooltip for your needs and taste.
 
 
