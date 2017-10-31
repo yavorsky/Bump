@@ -10,6 +10,7 @@ from . import transfrom
 from . import cache
 from . import request
 from . import log
+from . import semver
 
 class Bump:
     def get_focused_view_id(self, view):
@@ -24,7 +25,6 @@ class Bump:
         if not full_filename:
             return False
         filename = os.path.split(full_filename)[1]
-        # sublime.status_message(file_extension)
         return filename in conf.settings.get('supported_filenames', defaults.get_supported_filenames())
 
     def from_cache_or_fetch(self, package, distribution_mode, vid, callback):
@@ -95,7 +95,7 @@ class Bump:
         def callback(version):
             cache.set_package(package, distribution_mode, vid, version)
             with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
-            has_matched = current_version == version
+            has_matched = semver.match(current_version, version)
             log.log_version(view, package, version, has_matched, with_tooltip)
         self.from_cache_or_fetch(package, distribution_mode, vid, callback)
 
