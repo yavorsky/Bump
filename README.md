@@ -1,4 +1,4 @@
-SublimeBump
+Bump
 =============
 
 A package allows to preview and manage latest versions of [npm](https://npmjs.com)/[yarn](https://yarnpkg.com) packages easily.
@@ -14,43 +14,43 @@ For now, it allows:
 - Customize tooltip for your needs and taste.
 
 
-![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/SublimeBump/master/img/preview.gif)
+![Demo of latest usage](https://raw.githubusercontent.com/yavorsky/Bump/master/img/preview.gif)
 
   ​
 ## Installation
 
-#### Install SublimeBump via Package Control
+#### Install Bump via Package Control
 
-The easiest and recommended way to install SublimeBump is using [Package Control](https://packagecontrol.io/packages/SublimeBump).
+The easiest and recommended way to install Bump is using [Package Control](https://packagecontrol.io/packages/Bump).
 
 From the **main application menu** (CMD + SHIFT + P), navigate to:
 
-`Tools` -> `Command Palette...` -> `Package Control: Install Package`, type the word **SublimeBump**, then select it to complete the installation.
+`Tools` -> `Command Palette...` -> `Package Control: Install Package`, type the word **Bump**, then select it to complete the installation.
 
 #### Manual installation
 
 ##### via archive
-1. Download and extract SublimeBump [zip file](https://github.com/yavorsky/SublimeBump/archive/master.zip) to your Sublime Text Packages directory (Sublime Text -> Preferences -> Browse Packages...).
-2. Rename the extracted directory from `SublimeBump-master` to `SublimeBump`.
+1. Download and extract Bump [zip file](https://github.com/yavorsky/Bump/archive/master.zip) to your Sublime Text Packages directory (Sublime Text -> Preferences -> Browse Packages...).
+2. Rename the extracted directory from `Bump-master` to `Bump`.
 
 ##### or via git clone
-`git clone https://github.com/yavorsky/SublimeBump.git $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/SublimeBump`
+`git clone https://github.com/yavorsky/Bump.git $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/Bump`
 
 ## Usage
 
-Just install the package and focus the line with dependency in `package.json`. SublimeBump will preview latest or next version (according to the distribution mode) of the package in the bottombar or with the tooltip.
+Just install the package and focus the line with dependency in `package.json`. Bump will preview latest or next version (according to the distribution mode) of the package in the bottombar or with the tooltip.
 
 #### Main features:
 
 * **Focus the line** inside `dependencies`/`devDependencies`/`peerDependencies`/`optionalDependencies` block to preview latest or next version of the package. If tooltip option in settings is `false` then version will be displayed in the bottom bar.
 * **Click on the version in the tooltip** to format current version to the one from tooltip.
-* **Click on SublimeBump -> Format to...** latest/next version from the context menu.
+* **Click on Bump -> Format to...** latest/next version from the context menu.
 * **Choose distribution mode** to change whether or not to fetch unreleased (alpha/beta/etc) version before relaesed.
 
 
 ## Settings
 
-Many options are customizable from the **Command Palette** (super + shift + p) and type **SublimeBump**.
+Many options are customizable from the **Command Palette** (super + shift + p) and type **Bump**.
 
 #### distribution_mode
 
@@ -58,7 +58,7 @@ Type: *String*, Default: `latest`
 
 Command: `Choose distribution mode`.
 
-Currently, SublimeBump supports `latest` and `next` distribution tags. By default, the `latest` tag is used by npm to identify the current version of a package. The `next` tag is used by some projects to identify the upcoming version (alpha, beta, etc). 
+Currently, Bump supports `latest` and `next` distribution tags. By default, the `latest` tag is used by npm to identify the current version of a package. The `next` tag is used by some projects to identify the upcoming version (alpha, beta, etc). 
 
 With `next` mode, package trying to fetch latest version, and if no one was registered, it fallbacks to the `latest` version.
 
@@ -74,19 +74,19 @@ Whether or not show tooltip near the cursor. If tooltip is disabled, the version
 
 Type: *Array*, Default: `["dependencies", "devDependencies", "peerDependencies"]`
 
-Field name, where SublimeBump will search and show latest version for current package.
+Field name, where Bump will search and show latest version for current package.
 
 
 #### supported_filenames
 
 Type: *Array*, Default: `["package.json"]`
 
-Name of the files when SublimeBump will watch out for your cursor. We haven't universal parser for all formats, but with json files it does its work.
+Name of the files when Bump will watch out for your cursor. We haven't universal parser for all formats, but with json files it does its work.
 
 
 ## Key Bindings
 
-SublimeBump has pre-defined keyboard shortcuts. For now, it format package value on the line with the cursor.
+Bump has pre-defined keyboard shortcuts. For now, it format package value on the line with the cursor.
 
 | Command          | Linux & Windows | MacOS          |
 | ---------------- | --------------- | -------------- |
@@ -99,7 +99,7 @@ SublimeBump has pre-defined keyboard shortcuts. For now, it format package value
 
 ## License
 
-SublimeBump is released under the MIT License.
+Bump is released under the MIT License.
 
 Copyright (c) 2017 Artem Yavorsky.
 

@@ -11,7 +11,7 @@
 import sublime_plugin
 
 from . import defaults
-from . import bump
+from . import persist
 from . import settings as conf
 
 class ChooseSettingCommand(sublime_plugin.WindowCommand):
@@ -165,15 +165,15 @@ class ChooseDistributionMode(ChooseSettingCommand):
         return [[name.capitalize(), description] for name, description in defaults.VERSION_MODES]
 
     def setting_was_changed(self, setting):
-        bump.worker.log_version_for_active_view()
+        persist.worker.log_version_for_active_view()
 
 class BumpLatestVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        bump.worker.run_bump_with_mode(self.view, edit, 'latest')
+        persist.worker.run_bump_with_mode(self.view, edit, 'latest')
 
 class BumpNextVersionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        bump.worker.run_bump_with_mode(self.view, edit, 'next')
+        persist.worker.run_bump_with_mode(self.view, edit, 'next')
 
 class SublimebumpEditCommand(sublime_plugin.TextCommand):
     """A plugin command used to generate an edit object for a view."""

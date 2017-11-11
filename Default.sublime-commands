@@ -1,22 +1,22 @@
 [
     {
-        "caption": "Preferences: SublimeBump Settings",
+        "caption": "Preferences: Bump Settings",
         "command": "edit_settings",
         "args": {
-          "base_file": "${packages}/SublimeBump/SublimeBump.sublime-settings",
-          "default": "${packages}/User/SublimeBump.sublime-settings"
+          "base_file": "${packages}/Bump/Bump.sublime-settings",
+          "default": "${packages}/User/Bump.sublime-settings"
         }
     },
     {
-        "caption": "SublimeBump: Choose Distribution Mode",
+        "caption": "Bump: Choose Distribution Mode",
         "command": "choose_distribution_mode"
     },
     {
-        "caption": "SublimeBump: Format To The Latest Version",
+        "caption": "Bump: Format To The Latest Version",
         "command": "bump_latest_version"
     },
     {
-      "caption": "SublimeBump: Format To The Next Version",
+      "caption": "Bump: Format To The Next Version",
       "command": "bump_next_version"
     }
 ]

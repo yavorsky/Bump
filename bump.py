@@ -1,121 +1,48 @@
+import json
 import os
-import urllib
+from string import Template
 
 import sublime
+import sublime_plugin
 
-from . import defaults
-from . import settings as conf
 from . import parser
-from . import transfrom
-from . import cache
-from . import request
 from . import log
-from . import semver
+from . import request
+from . import cache
+from . import transfrom
+from . import commands
+from . import settings as conf
+from . import persist
 
-class Bump:
-    def get_focused_view_id(self, view):
-        active_view = view.window().active_view()
+def plugin_loaded():
+    """Entry point for SL plugins."""
+    conf.plugin_is_loaded = True
+    conf.settings.load()
+    log.printf('debug mode:', 'on' if conf.debug_mode() else 'off')
 
-        for view in view.window().views():
-            if view == active_view:
-                return view
+    plugin = Bump.shared_plugin()
+    conf.settings.on_update_call(Bump.on_settings_updated)
 
-    def file_supported(self, view):
-        full_filename = view.file_name()
-        if not full_filename:
-            return False
-        filename = os.path.split(full_filename)[1]
-        return filename in conf.settings.get('supported_filenames', defaults.get_supported_filenames())
+class Bump(sublime_plugin.EventListener):
+    def __init__(self, *args, **kwargs):
+        """Initialize a new instance."""
+        super().__init__(*args, **kwargs)
 
-    def from_cache_or_fetch(self, package, distribution_mode, vid, callback):
-        cached = cache.get_by_package(package, distribution_mode, vid)
-        if cached:
-            callback(cached)
-            return
+        self.__class__.shared_instance = self
 
-        try: request.fetch_package_version(package, distribution_mode, callback)
-        except urllib.error.URLError as e:
-            if e.code == 404 and distribution_mode != 'latest':
-                request.fetch_package_version(package, 'latest', callback)
+    @classmethod
+    def shared_plugin(cls):
+        """Return the plugin instance."""
+        return cls.shared_instance
 
-    def run_bump_with_mode(self, view, edit, distribution_mode):
-        if not self.file_supported(view): return
+    @classmethod
+    def on_settings_updated(cls, setting):
+        persist.worker.log_version_for_active_view()
 
-        region = parser.get_active_region(view)
-        parent_key = parser.get_parent_key(view, region)
-        target_fields = conf.settings.get('dependency_fields', defaults.get_dependency_fields())
+    def on_selection_modified_async(self, view):
+        self.display_version_for_line(view, tooltip=True)
 
-        # Prevent parsing values from other fields.
-        if not parent_key or parent_key not in target_fields:
-            return
-
-        line_text = parser.get_text_from_line(view, region)
-        if not line_text: return
-
-        package, version = parser.get_current_package(line_text)
-        vid = view.id()
-
-        def callback(version):
-            transfrom.format_version_on_line(view, edit, region, version)
-
-        self.from_cache_or_fetch(package, distribution_mode, vid, callback)
-
-    def log_version_for_view(self, view):
-        if not self.file_supported(view):
-            return
-
-        view = self.get_focused_view_id(view)
-
-        if view is None:
-            return
-
-        vid = view.id()
-        # Get active region
-        region = parser.get_active_region(view)
-
-        if region == None:
+    def display_version_for_line(self, view, tooltip=False):
+        if persist.worker.is_scratch(view):
            return
-
-        # Get parent package key for active region.
-        parent_key = parser.get_parent_key(view, region)
-        target_fields = conf.settings.get('dependency_fields', defaults.get_dependency_fields())
-
-        # Prevent parsing values from other fields.
-        if not parent_key or parent_key not in target_fields:
-            return
-
-        line_text = parser.get_text_from_line(view, region)
-
-        if not line_text:
-            return
-
-        package, current_version = parser.get_current_package(line_text)
-
-        distribution_mode = conf.settings.get('distribution_mode', defaults.get_distribution_mode())
-        def callback(version):
-            cache.set_package(package, distribution_mode, vid, version)
-            with_tooltip = conf.settings.get('tooltip', defaults.get_tooltip())
-            has_matched = semver.satisfies(version, current_version)
-            log.log_version(view, package, version, has_matched, with_tooltip)
-        self.from_cache_or_fetch(package, distribution_mode, vid, callback)
-
-
-    def log_version_for_active_view(self):
-        view = sublime.active_window().active_view()
-        self.log_version_for_view(view)
-
-    def is_scratch(self, view):
-        if view.is_scratch() or view.is_read_only() or view.window() is None or view.settings().get("repl") is not None:
-            return True
-        elif (
-            view.file_name() and
-            view.file_name().startswith(sublime.packages_path() + os.path.sep) and
-            not os.path.exists(view.file_name())
-        ):
-            return True
-        else:
-            return False
-
-
-if 'plugin_is_loaded' not in globals():
-    worker = Bump()
+        persist.worker.log_version_for_view(view)
