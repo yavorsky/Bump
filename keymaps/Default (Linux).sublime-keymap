@@ -1,4 +1,4 @@
 [
-    { "keys": ["ctrl+k+,"], "command": "bump_latest_version" },
-    { "keys": ["ctrl+k+."], "command": "bump_next_version" },
+    { "keys": ["ctrl+j", "k"], "command": "bump_latest_version" },
+    { "keys": ["ctrl+j", "l"], "command": "bump_next_version" },
 ]
