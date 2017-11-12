@@ -90,8 +90,8 @@ Bump has pre-defined keyboard shortcuts. For now, it format package value on the
 
 | Command          | Linux & Windows | MacOS          |
 | ---------------- | --------------- | -------------- |
-| Format to latest | CTRL + K + ,    | CTRL + CMD + , |
-| Format to next   | CTRL + K + .    | CTRL + CMD + . |
+| Format to latest | CTRL + B + K    | CTRL + CMD + , |
+| Format to next   | CTRL + B + L    | CTRL + CMD + . |
 
 
 ------
