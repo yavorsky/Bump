@@ -88,10 +88,10 @@ Name of the files when Bump will watch out for your cursor. We haven't universal
 
 Bump has pre-defined keyboard shortcuts. For now, it format package value on the line with the cursor.
 
-| Command          | Linux & Windows | MacOS          |
-| ---------------- | --------------- | -------------- |
-| Format to latest | CTRL + B + K    | CTRL + CMD + , |
-| Format to next   | CTRL + B + L    | CTRL + CMD + . |
+| Command          | Key bindings    |
+| ---------------- | --------------- |
+| Format to latest | ALT + SHIFT + L |
+| Format to next   | ALT + SHIFT + N |
 
 
 ------
