@@ -10,7 +10,7 @@ from . import transfrom
 from . import cache
 from . import request
 from . import log
-from . import semver
+from .lib import semver
 
 class Persist:
     def get_focused_view_id(self, view):
