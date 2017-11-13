@@ -12,7 +12,7 @@ VERSION_MODES = (
     ('latest', 'Show released versions only'),
     ('next', 'Show upcoming (alpha, beta) versions')
 )
-default_tooltip = False
+default_tooltip = True
 tooltip_styles = {
     'version_color': '#FFFFFF',
     'package_color': '#76C1BA',
