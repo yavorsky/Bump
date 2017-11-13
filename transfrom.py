@@ -9,6 +9,8 @@ def format_version_on_line(view, edit, region, version):
   [package_name, prev_version] = parser.get_current_package(line_text)
   [package_coords, version_coords] = parser.get_current_package_coords(line_text)
   [version_start, version_end] = version_coords
+  if (version_start == None):
+    return
   line_content.a += version_start
   version_len = len(version)
   diff = version_len - len(prev_version)
