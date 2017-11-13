@@ -87,7 +87,7 @@ class Settings:
 
     def observe(self, observer=None):
         """Observer changes to the plugin settings."""
-        self.plugin_settings = sublime.load_settings('SublimeBump.sublime-settings')
+        self.plugin_settings = sublime.load_settings('Bump.sublime-settings')
         self.plugin_settings.clear_on_change('sublimebump-persist-settings')
         self.plugin_settings.add_on_change('sublimebump-persist-settings',
                                            observer or self.on_update)
@@ -144,7 +144,7 @@ class Settings:
         # Fill in default linter settings
         settings = self.settings
 
-        filename = 'SublimeBump.sublime-settings'
+        filename = 'Bump.sublime-settings'
         user_prefs_path = os.path.join(sublime.packages_path(), 'User', filename)
         settings_views = []
 
@@ -169,9 +169,9 @@ class Settings:
                 view.run_command('sublimebump_edit')
                 view.run_command('save')
         else:
-            user_settings = sublime.load_settings('SublimeBump.sublime-settings')
+            user_settings = sublime.load_settings('Bump.sublime-settings')
             user_settings.set('user', settings)
-            sublime.save_settings('SublimeBump.sublime-settings')
+            sublime.save_settings('Bump.sublime-settings')
 
     def on_prefs_update(self):
         """Perform maintenance when the ST prefs are updated."""
