@@ -1,15 +1,29 @@
 import re
 import sublime
 
-lineRe = r'"\s?(.+)\s?"\s?:?\s?"(.+)"'
+lineRe = r'"\s?(.+)\s?"\s?:?\s?"(.+)?"'
+lineReWithoutVersion = r'"\s?(.+)\s?"\s?:?\s?("")'
 
 def get_current_package(text):
     groups = re.search(lineRe, text)
-    return [groups.group(1), groups.group(2)]
+    if not groups:
+        return [None, None]
+
+    return [groups.group(1), groups.group(2) or '']
 
 def get_current_package_coords(text):
     groups = re.search(lineRe, text)
-    return [groups.span(1), groups.span(2)]
+    if not groups:
+        return [None, None]
+    name_coords = groups.span(1)
+    version_coords = groups.span(2)
+    if not version_coords or version_coords[0] is -1:
+        empty_version_groups = re.search(lineReWithoutVersion, text)
+        if not empty_version_groups:
+            return [None, None]
+        version_spans = empty_version_groups.span(2)
+        version_coords = [version_spans[0] + 1, version_spans[1] + 1]
+    return [name_coords, version_coords]
 
 def get_text(view):
     return view.substr(sublime.Region(0, view.size()))
