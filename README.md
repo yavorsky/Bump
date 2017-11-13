@@ -72,7 +72,7 @@ Whether or not show tooltip near the cursor. If tooltip is disabled, the version
 
 #### dependency_fields
 
-Type: *Array*, Default: `["dependencies", "devDependencies", "peerDependencies"]`
+Type: *Array*, Default: `["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]`
 
 Field name, where Bump will search and show latest version for current package.
 

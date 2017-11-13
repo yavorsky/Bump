@@ -1,7 +1,8 @@
 dependency_fields = [
     'dependencies',
     'devDependencies',
-    'peerDependencies'
+    'peerDependencies',
+    'optionalDependencies',
 ]
 supported_filenames = ['package.json']
 default_registry = 'https://registry.npmjs.org';
