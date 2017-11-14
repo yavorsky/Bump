@@ -1,4 +1,5 @@
 import sublime
+import json
 import os
 
 from copy import deepcopy
