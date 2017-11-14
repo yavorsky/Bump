@@ -2,6 +2,7 @@ import sublime
 import json
 import os
 
+from collections import defaultdict
 from copy import deepcopy
 from . import defaults
 
@@ -184,6 +185,7 @@ if 'plugin_is_loaded' not in globals():
     settings = Settings()
 
     plugin_is_loaded = False
+    edits = defaultdict(list)
 
 def debug_mode():
     return settings.get('debug')
