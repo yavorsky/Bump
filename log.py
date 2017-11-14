@@ -1,3 +1,4 @@
+from __future__ import print_function
 from string import Template
 from . import settings as conf
 from . import defaults
